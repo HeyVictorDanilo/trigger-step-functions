@@ -33,3 +33,4 @@ package:
 functions:
   hello:
     handler: src/trigger.handler
+    timeout: 900
