@@ -35,7 +35,7 @@ def handler(event, context):
 class Emblue:
     def __init__(
         self,
-        starting_date=(date.today() - timedelta(days=7)),
+        starting_date=(date.today() - timedelta(days=1)),
         finishing_date=(date.today() - timedelta(days=1)),
     ):
         self.db_instance = DBInstance(public_key=os.getenv("CLIENT_KEY"))
@@ -70,12 +70,12 @@ class Emblue:
         )
 
     def download_files(self):
-        sent_files = []
+        started_events = []
         for date_file in self.__get_date_range():
             for account in self.__get_emblue_accounts():
                 if self.__execute_event(account, date_file):
-                    sent_files.append({"date": date_file.strftime("%Y%m%d"), "account": account})
-        return sent_files
+                    started_events.append({"date": date_file.strftime("%Y%m%d"), "account": account})
+        return started_events
 
     def __execute_event(self, account, date_file):
         try:
