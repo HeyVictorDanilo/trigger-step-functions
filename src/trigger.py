@@ -94,7 +94,7 @@ class Emblue:
         self.db_instance.handler(query=f"""
             INSERT INTO em_blue_migration_log (date_migrated, account, status, message)
                 VALUES (
-                    '{date.today()}'
+                    '{date.today()}',
                     '{account[1]}',
                     '{status}',
                     '{str(message)}'
