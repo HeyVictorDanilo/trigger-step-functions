@@ -34,9 +34,9 @@ def handler(event, context):
 
 class Emblue:
     def __init__(
-        self,
-        starting_date=(date.today() - timedelta(days=1)),
-        finishing_date=(date.today() - timedelta(days=1)),
+            self,
+            starting_date=(date.today() - timedelta(days=7)),
+            finishing_date=(date.today() - timedelta(days=1)),
     ):
         self.db_instance = DBInstance(public_key=os.getenv("CLIENT_KEY"))
         self.s3_client = boto3.client(
@@ -81,12 +81,23 @@ class Emblue:
         try:
             response = self.stf_client.start_execution(
                 stateMachineArn=os.getenv("STATE_FUNCTION_ARN"),
-                #name=f"test_{os.getenv('STATE_FUNCTION_NAME')}_{date_file.strftime('%Y%m%d')}",
                 input=json.dumps(
                     {"account": account, "file_date": date_file.strftime("%Y%m%d")}
                 ),
             )
         except ClientError as error:
-            logging.error(error)
+            self.__write_log(account=account, error=error)
         else:
             return response
+
+    def __write_log(self, account, error):
+        self.db_instance.handler(query=f"""
+            INSERT INTO em_blue_migration_log (date_migrated, account, status, message)
+                VALUES (
+                    '{date.today()}'
+                    '{account[2]}',
+                    'PENDING_TO_PROCESS',
+                    '{str(error)}'
+                );
+            """
+        )
