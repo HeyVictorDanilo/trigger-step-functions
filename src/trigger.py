@@ -89,7 +89,7 @@ class Emblue:
                 ),
             )
         except ClientError as error:
-            self.__write_log(account=account, error=error, status="PENDING_TO_PROCESS")
+            self.__write_log(account=account, error=error, status=0)
         else:
             return response
 
@@ -99,7 +99,7 @@ class Emblue:
                 VALUES (
                     '{date.today()}',
                     '{account[1]}',
-                    '{status}',
+                    {status},
                     '{str(message)}'
                 );
             """
