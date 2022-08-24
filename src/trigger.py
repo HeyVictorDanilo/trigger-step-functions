@@ -15,6 +15,9 @@ import boto3
 
 from src.main_db import DBInstance
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
 load_dotenv()
 
 
@@ -22,7 +25,7 @@ def handler(event, context):
     try:
         download_files = Emblue().download_files()
     except Exception as e:
-        logging.error(e)
+        logger.error(e)
     else:
         body = {
             "message": "Function executed successfully!",
