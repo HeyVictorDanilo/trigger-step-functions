@@ -90,14 +90,14 @@ class Emblue:
         else:
             return response
 
-    def __write_log(self, account, error):
+    def __write_log(self, account, message):
         self.db_instance.handler(query=f"""
             INSERT INTO em_blue_migration_log (date_migrated, account, status, message)
                 VALUES (
                     '{date.today()}'
                     '{account[1]}',
                     'PENDING_TO_PROCESS',
-                    '{str(error)}'
+                    '{str(message)}'
                 );
             """
         )
