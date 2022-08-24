@@ -86,17 +86,17 @@ class Emblue:
                 ),
             )
         except ClientError as error:
-            self.__write_log(account=account, error=error)
+            self.__write_log(account=account, error=error, status="PENDING_TO_PROCESS")
         else:
             return response
 
-    def __write_log(self, account, message):
+    def __write_log(self, account, message, status):
         self.db_instance.handler(query=f"""
             INSERT INTO em_blue_migration_log (date_migrated, account, status, message)
                 VALUES (
                     '{date.today()}'
                     '{account[1]}',
-                    'PENDING_TO_PROCESS',
+                    '{status}',
                     '{str(message)}'
                 );
             """
