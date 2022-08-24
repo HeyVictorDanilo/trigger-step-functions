@@ -95,7 +95,7 @@ class Emblue:
             INSERT INTO em_blue_migration_log (date_migrated, account, status, message)
                 VALUES (
                     '{date.today()}'
-                    '{account[2]}',
+                    '{account[1]}',
                     'PENDING_TO_PROCESS',
                     '{str(error)}'
                 );
